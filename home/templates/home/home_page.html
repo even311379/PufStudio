@@ -11,11 +11,30 @@ Delete the line below if you're just getting started and want to remove the welc
 <link rel="stylesheet" href="{% static 'css/welcome_page.css' %}">
 {% endblock extra_css %}
 
-{% block content %}
 
+
+{% block content %}
+test if i am in!!
+
+測試中文顯示
+
+<i class="material-icons">cake</i>
+
+<nav>
+  <div class="nav-wrapper">
+    <a href="" class="brand-logo">Logo</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <li><a href="">sass</a></li>
+      <li><a href="">sass <span class="new badge">4</span></a></li>
+      <li><a href="">sass</a></li>
+    </ul>
+  </div>
+</nav>
 {% comment %}
 Delete the line below if you're just getting started and want to remove the welcome screen!
-{% endcomment %}
 {% include 'home/welcome_page.html' %}
+{% endcomment %}
+
+
 
 {% endblock content %}
