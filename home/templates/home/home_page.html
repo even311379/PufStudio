@@ -30,11 +30,20 @@ test if i am in!!
     </ul>
   </div>
 </nav>
-{% comment %}
-Delete the line below if you're just getting started and want to remove the welcome screen!
-{% include 'home/welcome_page.html' %}
-{% endcomment %}
 
 
+<button id="button_alert">click !</button>
 
 {% endblock content %}
+
+{% block extra_js%}
+<script type="text/python">
+from browser import document, alert
+
+def hello(ev):
+    alert("Hello !")
+
+document["button_alert"].bind("click", hello)
+</script>
+
+{% endblock %}

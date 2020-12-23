@@ -23,12 +23,13 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;900&display=swap" rel="stylesheet">  
+        
     {% block extra_css %}
     {# Override this in templates to add extra stylesheets #}
     {% endblock %}
 </head>
 
-    <body class="{% block body_class %}{% endblock %}">
+    <body class="{% block body_class %}{% endblock %}" onload="brython()">
     {% wagtailuserbar %}
     
     {% block content %}{% endblock %}
@@ -36,7 +37,8 @@
     {# Global javascript #}
     <script type="text/javascript" src="{% static 'js/PufStudio.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
+    <script type="text/javascript" src="{% static 'js/brython.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/brython_stdlib.js' %"></script>
         {% block extra_js %}
             {# Override this in templates to add extra javascript #}
         {% endblock %}
