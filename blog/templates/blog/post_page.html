@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static '/css/autumn.css' %}">
+{% endblock extra_css %}
+
+
+{% block content %}
+<section class="hero is-medium is-info is-bold">
+    <div class='hero-body'>
+        <div class="container">
+            <h1 class='title'>{{ page.title }}</h1>
+            <h2 class='subtitle'>{{ page.subtitle }}</h2>
+        </div>
+    </div>
+</section>    
+
+<div class='columns'>
+    <div class='column is-one-fifth'>
+        hey
+    </div>
+    <div class='column has-background-info'>
+        {% for block in page.body %}
+            {% if block.block_type == 'heading' %}
+                <h1>{{ block.value }}</h1>
+            {% elif block.block_type == 'paragraph' %}
+                <div class='container'>{{ block.value }}</div>
+            {% elif block.block_type == 'code' %}
+                <div class='content'> {{ block }} </div>
+            {% elif block.block_type == 'video' %}
+                <figure class="image is-16by9">
+                    <iframe class="has-ratio" width="640" height="360" src="{{ block.value }}" frameborder="0" allowfullscreen></iframe>
+                </figure>
+            {% elif block.block_type == 'image' %}
+                <a data-fancybox="gallery" href="/media/original_images/{{ block.value }}">
+                    <img class="responsive-image" src="/media/original_images/{{ block.value }}">
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class='column is-one-fifth has-background-dark'>
+        heyhey
+    </div>
+</div>
+
+{% endblock content %}

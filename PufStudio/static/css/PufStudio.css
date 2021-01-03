@@ -1,4 +1,48 @@
-h1,h2,h3,h4,h5,h6,p {
+h1,h2,h3,h4,h5,h6,p,a  {
 
     font-family: 'Noto Sans TC', sans-serif;
 }
+
+/* #NAV{
+    padding: 0 10vh;
+    height: 5rem;
+} */
+
+a:hover, a:visited, a:link, a:activea {
+    text-decoration: none;
+}
+
+.content .tag, .content .number {
+  display: inline;
+  padding: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  text-align: inherit;
+  vertical-align: inherit;
+  border-radius: inherit;
+  font-weight: inherit;
+  white-space: inherit;
+  background: inherit;
+  margin: inherit;
+}
+
+.token.operator {
+    background-color: rgba(0,0,0,0) !important;
+}
+/* @media only screen and (max-width: 768px) {
+    #NAV {
+        border-top: 8vh solid transparent;
+        height: 20vh;        
+    }
+    
+    #logos {
+        width: 90vw;
+        left: 5vw;
+        font-size: 3.5vw;
+        bottom: 1vh;
+    }
+
+    #logos img {
+        height: 7vw;
+    }
+} */

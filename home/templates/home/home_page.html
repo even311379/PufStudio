@@ -1,49 +1,125 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block body_class %}template-homepage{% endblock %}
 
 {% block extra_css %}
 
-{% comment %}
-Delete the line below if you're just getting started and want to remove the welcome screen!
-{% endcomment %}
-<link rel="stylesheet" href="{% static 'css/welcome_page.css' %}">
 {% endblock extra_css %}
 
 
 
 {% block content %}
-test if i am in!!
 
-測試中文顯示
+<section class="hero is-medium" style="
+  background-image: url(http://orig14.deviantart.net/7584/f/2015/181/2/7/flat_mountains_landscape_by_ggiuliafilippini-d8zdbco.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  ">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          Welcome To my site!
+        </h1>
+        <h2 class="subtitle">
+            This is the place where I share tutorials and dev logs.          
+        </h2>
+      </div>
+    </div>
+  </section>
 
-<i class="material-icons">cake</i>
+  <section class='section has-background-danger-light'>
+    <div class='container is-widescreen'>
+      <div class='columns'>
+        <div class='column is-one-fifth'>
+          {% if 'en' in page.url %}
+              <aside class="menu">
+                <p class="menu-label is-size-5">
+                  Category
+                </p>
+                <ul class="menu-list">
+                  <li><a>Tutorials</a></li>
+                  <li><a>Dev Log</a></li>
+                  <li><a>Tools</a></li>
+                </ul>
+                <p class="menu-label is-size-5">
+                  Python
+                </p>
+                <ul class="menu-list">
+                  <li><a>Python ABC tutorial</a></li>
+                  <li><a>Scraper</a></li>
+                  <li><a>Data Analysis Tutorial</a></li>
+                  <li><a>Web Develop</a></li>
+                  <li><a>App Develop</a></li>
+                </ul>
+                <p class="menu-label is-size-5">
+                  Unreal
+                </p>
+                <ul class="menu-list">
+                  <li><a>Gameplay Ability System</a></li>
+                  <li><a>C++ notes</a></li>
+                  <li><a>UMG notes</a></li>
+                  <li><a>Dev Demo</a></li>
+                </ul>
+                <p class="menu-label is-size-5">
+                  Freelancer
+                </p>
+                <ul class="menu-list">
+                  <li><a>Backlog</a></li>
+                  <li><a class='has-text-danger has-text-weight-bold'>Contact Me</a></li>
+                </ul>                   
+              </aside>
+              {% else %}
+              <aside class="menu">
+                <p class="menu-label is-size-5">
+                  Category
+                </p>
+                <ul class="menu-list">
+                  <li><a>教學</a></li>
+                  <li><a>開發紀錄</a></li>
+                  <li><a>工具</a></li>
+                </ul>
+                <p class="menu-label is-size-5">
+                  Python
+                </p>
+                <ul class="menu-list">
+                  <li><a>Python新手教學</a></li>
+                  <li><a>爬蟲教學</a></li>
+                  <li><a>資料分析教學</a></li>
+                  <li><a>網站開發</a></li>
+                  <li><a>App開發</a></li>
+                </ul>
+                <p class="menu-label is-size-5">
+                  Unreal
+                </p>
+                <ul class="menu-list">
+                  <li><a>Gameplay Ability System</a></li>
+                  <li><a>C++筆記</a></li>
+                  <li><a>UMG筆記</a></li>
+                  <li><a>開發展示</a></li>
+                </ul>
+                <p class="menu-label is-size-5">
+                  Freelancer
+                </p>
+                <ul class="menu-list">
+                  <li><a>接案紀錄</a></li>
+                  <li><a class='has-text-danger has-text-weight-bold'>找我交案</a></li>
+                </ul>                   
+              </aside>
+              {% endif %}
+            </div>
+            <div class='column'>
+                <h2 class='title'>
+                    近期貼文:
+                </h2>
+            </div>
+        </div>
+    </div>
+</section>
 
-<nav>
-  <div class="nav-wrapper">
-    <a href="" class="brand-logo">Logo</a>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
-      <li><a href="">sass</a></li>
-      <li><a href="">sass <span class="new badge">4</span></a></li>
-      <li><a href="">sass</a></li>
-    </ul>
-  </div>
-</nav>
 
 
-<button id="button_alert">click !</button>
+
+
 
 {% endblock content %}
-
-{% block extra_js%}
-<script type="text/python">
-from browser import document, alert
-
-def hello(ev):
-    alert("Hello !")
-
-document["button_alert"].bind("click", hello)
-</script>
-
-{% endblock %}
