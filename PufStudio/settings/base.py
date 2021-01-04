@@ -172,7 +172,7 @@ WAGTAIL_CODE_BLOCK_THEME = 'solarizedlight'
 
 WAGTAIL_CODE_BLOCK_LANGUAGES = (
     ('python', 'Python'),
-    ('c', 'C'),
+    ('cpp', 'C++'),
     ('bash', 'Bash/Shell'),
     ('html', 'HTML'),
     ('css', 'CSS'),
