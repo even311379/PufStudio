@@ -28,12 +28,12 @@
 </head>
 
 <body onload="brython()">
-    {% wagtailuserbar %}
+    {% comment %} {% wagtailuserbar %} {% endcomment %}
   <nav class="navbar is-warning is-transparent" role="navigation" aria-label="main navigation" id='NAV'>
     <div class="navbar-brand">
       <a class="navbar-item" href="/">
         <img class='px-5' src={% static 'img/logo.png' %} >
-        <h1 class='title'>Puf Studio</h1>
+        <h1 class='title' id="SiteTitle">Puf Studio</h1>
       </a>
 
       <a role="button" class="navbar-burger" id='NavbarImpl' aria-label="menu" aria-expanded="false" data-target="PufNavbar">
@@ -69,6 +69,8 @@
     </div>
 
   </nav>
+  
+  <a href="#SiteTitle" class='icon has-text-danger-dark is-large' id="ToTopWidget"><i class="material-icons is-size-1">arrow_drop_up</i></a>
     {% block content %}    {% endblock %}
   <!-- footer -->
 <footer class="footer">
@@ -86,7 +88,7 @@
     <script type="text/javascript" src="{% static 'js/brython_stdlib.js' %}"></script>
     <!-- <script type="text/javascript" src="{% static 'js/jquery-3.5.1.min.js' %}"></script> -->
     <script type="text/python">    
-from general_utils import NavbarImpl
+import general_utils.NavbarImpl
       {% block extra_python %} {% endblock %}
     </script>
 </body>
