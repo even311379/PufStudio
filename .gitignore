@@ -136,3 +136,4 @@ PufStudio/settings/dev.py
 /media/
 .vscode/
 migrations/
+brython*

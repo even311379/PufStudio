@@ -11,7 +11,4 @@ class HomePage(Page):
 class PageFolder(Page):
 
     def serve(self, request):
-        print(dir(request))
-        # print(request.curi)
-        print(request.path)
         return redirect(request.path[:3])

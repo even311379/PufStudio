@@ -1,14 +1,20 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static wagtailimages_tags %}
 
 
 {% block extra_css %}
-<link rel="stylesheet" type="text/css" href="{% static '/css/autumn.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
 {% endblock extra_css %}
 
 
 {% block content %}
-<section class="hero is-medium is-info is-bold">
+{% image page.thumbnail original as bimg %}
+<section class="hero is-medium is-info is-bold" style="
+  background-image: url({{ bimg.url }});
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  ">
     <div class='hero-body'>
         <div class="container">
             <h1 class='title'>{{ page.title }}</h1>
@@ -32,15 +38,26 @@
             <div class='content is-medium m-6 is-size-6'>{{ block.value }}</div>
             {% elif block.block_type == 'code' %}
             <div class='content'> {{ block }} </div>
+            {% elif block.block_type == 'mermaid' %}
+            <div class='mermaid'> {{ block.value|safe }} </div>
+            {% elif block.block_type == 'html' %}
+            <div class='content'>{{ block.value|safe }}</div>
             {% elif block.block_type == 'video' %}
-            <figure class="image is-16by9">
-                <iframe class="has-ratio" width="640" height="360" src="{{ block.value }}" frameborder="0"
-                    allowfullscreen></iframe>
-            </figure>
+            <div class='content m-6'>            
+                <figure class="image is-16by9">
+                    <iframe class="has-ratio" src="{{ block.value }}" frameborder="0"
+                        allowfullscreen></iframe>
+                </figure>
+            </div>
             {% elif block.block_type == 'image' %}
-            <a data-fancybox="gallery" href="/media/original_images/{{ block.value }}">
-                <img class="responsive-image" src="/media/original_images/{{ block.value }}">
-            </a>
+            {% image block.value original as img %}
+            <div class='content m-6'>
+                <figure class="image is-16x9">
+                    <a data-fancybox="gallery" href="{{ img.url }}">
+                        <img class="responsive-image" src="{{ img.url }}">
+                    </a>
+                </figure>
+            </div>
             {% endif %}
             {% endfor %}
         </div>
@@ -53,6 +70,14 @@
 
 {% endblock content %}
 
+{% block extra_js%}
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true});</script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+{% endblock %}
+
 {% block extra_python %}
 import general_utils.BookmarkGeneration
+import general_utils.CenterMermaidSvg
 {% endblock %}
