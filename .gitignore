@@ -138,3 +138,4 @@ PufStudio/settings/dev.py
 migrations/
 brython*
 jquery*
+.idea/

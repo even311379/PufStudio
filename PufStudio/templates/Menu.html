@@ -1,5 +1,7 @@
-{% if 'en' in page.url %}
+{% load wagtail_modeltranslation %}
+
 <aside class="menu">
+    {% if 'en' in page.url %}
     <p class="menu-label is-size-5">
         Category
     </p>
@@ -34,9 +36,7 @@
         <li><a>Backlog</a></li>
         <li><a class='has-text-danger has-text-weight-bold'>Contact Me</a></li>
     </ul>
-</aside>
-{% else %}
-<aside class="menu">
+    {% else %}
     <p class="menu-label is-size-5">
         Category
     </p>
@@ -71,5 +71,16 @@
         <li><a>接案紀錄</a></li>
         <li><a class='has-text-danger has-text-weight-bold'>找我交案</a></li>
     </ul>
+    {% endif %}
+    {% if has_translation %}
+    <hr>
+    <div class="menu-list is-size-5">
+        <a href="{{ other_url }}">
+            <div class="is-flex is-align-items-center">
+                <i class="material-icons">public</i>
+                <div class="pl-2">{{ other_language }}</div>
+            </div>
+        </a>
+    </div>
+    {% endif %}
 </aside>
-{% endif %}

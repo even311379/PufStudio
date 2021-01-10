@@ -9,8 +9,8 @@ html {
     padding: 0 10vh;
     height: 5rem;
 } */
-
-a:hover, a:visited, a:link, a:activea {
+a, a:hover, a:visited, a:link, a:active {
+    color: inherit !important;
     text-decoration: none;
 }
 
@@ -38,4 +38,15 @@ a:hover, a:visited, a:link, a:activea {
     right: 3rem;
     bottom: 3rem;
     z-index: 9999;
+}
+.is-transparent {
+    background-color: transparent !important;
+}
+.is-card-equal-height {
+   display: flex;
+   flex-direction: column;
+   height: 100%;
+}
+.is-card-equal-height .card-footer {
+   margin-top: auto;
 }

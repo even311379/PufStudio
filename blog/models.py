@@ -1,11 +1,14 @@
+import random
+
 from django.db import models
 from django import forms
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
 
 from wagtail.core.models import Page
 from wagtail.core.fields import StreamField
 from wagtail.core import blocks
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, MultiFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, MultiFieldPanel, FieldRowPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.images.blocks import ImageChooserBlock
 from wagtailcodeblock.blocks import CodeBlock
@@ -16,7 +19,6 @@ from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.tags import ClusterTaggableManager
 
 import datetime
-from home.models import PageFolder
 
 
 @register_snippet
@@ -67,7 +69,9 @@ class PostPage(Page):
     date = models.DateField("Post date", default=datetime.datetime.today)
     thumbnail = models.ForeignKey(
         'wagtailimages.Image', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
-    is_series = models.BooleanField(default='false')
+    is_en_finished = models.BooleanField(default=False, blank=True, verbose_name='English Version Finished?')
+    is_zh_finished = models.BooleanField(default=False, blank=True, verbose_name='Chinese Version Finished?')
+    is_series = models.BooleanField(default=False)
     series_name = models.ForeignKey(
         PostSeries, on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
     series_id = models.IntegerField(default=0, blank=True, null=True)
@@ -86,7 +90,7 @@ class PostPage(Page):
     tags = ClusterTaggableManager(through='PostTag', blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('subtitle', classname="title"),
+        FieldPanel('subtitle', classname="full"),
         StreamFieldPanel('body'),
         MultiFieldPanel([
             FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
@@ -98,25 +102,65 @@ class PostPage(Page):
 
     settings_panels = Page.settings_panels + [
         FieldPanel('date'),
+        FieldRowPanel([
+            FieldPanel('is_en_finished'),
+            FieldPanel('is_zh_finished')],
+            heading='Translation Finished?',
+        ),
         ImageChooserPanel('thumbnail'),
         MultiFieldPanel([
             FieldPanel('is_series'),
             FieldPanel('series_name'),
-            FieldPanel('series_id')]),
+            FieldPanel('series_id')],
+            heading='Series Setting',
+            classname='collapsible collapsed'
+        ),
     ]
+
+    def serve(self, request):
+        if not (self.is_zh_finished or self.is_en_finished):
+            return redirect('/')
+        if request.path.startswith('/en'):
+            has_translation = self.is_zh_finished
+            other_url = '/zh' + request.path[3:]
+            other_language = 'Chinese'
+            if not self.is_en_finished:
+                return redirect(other_url)
+        else:
+            has_translation = self.is_en_finished
+            other_url = '/en' + request.path[3:]
+            other_language = '英文'
+            if not self.is_zh_finished:
+                return redirect(other_url)
+        render_data = locals()
+        render_data['page'] = self
+        return render(request, 'blog/post_page.html', render_data)
 
 
 class SearchResultPage(Page):
-
     def serve(self, request):
-        if request.method == 'GET':
+        if request.content_type == 'BrythonAjax':
+            print('things went here??')
+            return HttpResponse('123456')
+            # return render(request, 'blog/search_result_ajax.html', dict(result=str(random.randint(10, 50))))
+
+        # if request.method == 'GET':
             # categories = request.GET.get('cats', None)
             # tags = request.GET.get('tags', None)
             # AllPosts = PostPage.objects.filter()
 
             # need some test
-            for post in PostPage.objects.live().descendant_of(PageFolder):
-                print(post.tags)
+            # for post in PostPage.objects.live().descendant_of(PageFolder):
+            #     print(post.tags)
+        print('standard render is here!!')
+
+        if request.path.startswith('/en'):
+            other_url = '/zh' + request.path[3:]
+            other_language = 'Chinese'
+        else:
+            other_url = '/en' + request.path[3:]
+            other_language = '英文'
+        has_translation = True
         render_data = locals()
         render_data['page'] = self
         return render(request, 'blog/search_result_page.html', render_data)

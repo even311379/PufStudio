@@ -1,11 +1,10 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static wagtailimages_tags %}
 
 
 {% block extra_css %}
 
 {% endblock extra_css %}
-
 
 
 {% block content %}
@@ -16,55 +15,68 @@
   background-repeat: no-repeat;
   background-size: cover;
   ">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title">
-        Welcome To my site!
-      </h1>
-      <h2 class="subtitle">
-        This is the place where I share tutorials and dev logs.
-      </h2>
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                {% if 'zh' in page.url %}
+                歡迎!
+                {% else %}
+                Welcome!
+                {% endif %}
+            </h1>
+            <h2 class="subtitle">
+                {% if 'zh' in page.url %}
+                這是我分享教學、開發紀錄、專案Demo、開發小工具的地方。
+                {% else %}
+                This is the place where I share tutorials and dev logs.
+                {% endif %}
+            </h2>
+        </div>
     </div>
-  </div>
 </section>
 
-<div class="dropdown is-hoverable">
-  <div class="dropdown-trigger">
-    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-      <span>Dropdown button</span>
-      <span class="icon is-small">
-        <i class="fas fa-angle-down" aria-hidden="true"></i>
-      </span>
-    </button>
-  </div>
-  <div class="dropdown-menu" id="dropdown-menu" role="menu">
-    <div class="dropdown-content">
-      <a href="#" class="dropdown-item">
-        English
-      </a>
-      <a href="#" class="dropdown-item is-active">
-        Traditional Chinese
-      </a>
-      <hr class="dropdown-divider">
-      <p class="dropdown-item">
-        Choose Language
-      </p>
-    </div>
-  </div>
-</div>
+
 <section class='section has-background-danger-light'>
-  <div class='container is-widescreen'>
-    <div class='columns'>
-      <div class='column is-one-fifth'>
-        {% include "Menu.html" %}
-      </div>
-      <div class='column'>
-        <h2 class='title'>
-          近期貼文:
-        </h2>
-      </div>
+    <div class='container is-widescreen'>
+        <div class='columns'>
+            <div class='column is-one-fifth'>
+                {% include "Menu.html" %}
+            </div>
+            <div class='column'>
+                <h2 class='title'>
+                    {% if 'zh' in page.url %}
+                    近期貼文:
+                    {% else %}
+                    Recent Posts:
+                    {% endif %}
+                </h2>
+                <div class="columns is-multiline">
+                    {% for post in posts %}
+                    <div class="column is-4">
+                        <div class="card is-transparent is-card-equal-height">
+                            <div class="card-image">
+                                <figure class="image is-16by9">
+                                    {% image post.thumbnail original as pto %}
+                                    <img src="{{ pto.url }}"
+                                         alt="Placeholder image">
+                                </figure>
+                            </div>
+                            <div class="card-content">
+                                <div class="content">
+                                    <p class="title is-5">{{ post.title }}</p>
+                                    <p class="subtitle is-5">{{ post.subtitle}}</p>
+                                </div>
+                            </div>
+                            <footer class="card-footer pr-3 is-justify-content-flex-end">
+                                    {{ post.date|date:'Y-m-d' }}
+                            </footer>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 
 {% endblock content %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section has-background-info-light">
+    <div class="container is-widescreen">
+        <div class="columns">
+            <div class='column is-one-fifth'>
+                {% include "Menu.html" %}
+            </div>
+            <div class='column'>
+                <h2 class='title'>
+                    {% if 'zh' in page.url %}
+                    <input id="AjaxInput" class="input is-large is-rounded" type="text" placeholder="輸入關鍵字">
+                    {% else %}
+                    <input id="AjaxInput" class="input is-large is-rounded" type="text" placeholder="Type key words">
+                    {% endif %}
+                </h2>
+                <div class="columns is-multiline" id="AjaxResult">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_python %}
+from browser import document, ajax, html
+
+def CompleteAjax(request):
+    OC = html.DIV(Class='column is-4')
+    C = html.DIV(Class='card is-transparent is-card-equal-height')
+    document['AjaxResult']<=OC<=C<=request.responseText
+    #document['AjaxResult']<=request.responseText
+
+def SendAjax(ev):
+    req = ajax.ajax()
+    req.open('GET', '{{ page.url }}', True)
+    req.set_header('content-type','BrythonAjax')
+    req.bind('complete', CompleteAjax)
+    req.send()
+
+
+document['AjaxInput'].bind('change', SendAjax)
+{% endblock %}
