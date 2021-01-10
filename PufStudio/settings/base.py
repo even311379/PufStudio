@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'wagtail_modeltranslation.makemigrations',
     'wagtail_modeltranslation.migrate',
 
+    'menus',
     'home',
     'blog',
     'apps',

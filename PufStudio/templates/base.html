@@ -1,4 +1,4 @@
-{% load static wagtailuserbar %}
+{% load static wagtailuserbar menus_tag %}
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -48,6 +48,8 @@
 
     <div id='PufNavbar' class='navbar-menu'>
         <div class="navbar-end">
+            {% get_menu "about" as about %}
+            <a class='navbar-item is-size-4 pr-5' href='{{ about.link }}'>{{ about.title_zh }}</a>
             <div class='navbar-item has-dropdown is-hoverable'>
                 <a class='navbar-link is-size-4' id='PythonLinks'>Python</a>
                 <div class='navbar-dropdown is-boxed is-size-5' id='PythonLinksContent'>
@@ -62,7 +64,7 @@
                     <a class="navbar-item">Unreal Dev Tools</a>
                 </div>
             </div>
-            <a class="navbar-item is-size-4">
+            <a class="navbar-item is-size-4 ">
                 Freelancer
             </a>
             <a class="navbar-item">
@@ -80,12 +82,12 @@
     <div class="hero-body">
         <div class="container">
             <div class="columns">
-                <div class="column is-6">
+                <div class="column is-7">
                     <strong>
                         <i class="material-icons" style="vertical-align: middle">copyright</i> 2021 PufStudio
                     </strong>
                 </div>
-                <div class="column is-3">
+                <div class="column is-2">
                     <i class="fa fa-github" style="font-size: 1.5rem;"></i> <a href="https://github.com/even311379">GITHUB</a>
                 </div>
                 <div class="column is-3">
