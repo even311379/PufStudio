@@ -1,7 +1,8 @@
-{% load wagtail_modeltranslation %}
+{% load wagtail_modeltranslation translation_util_tag %}
 
 <aside class="menu">
-    {% if 'en' in page.url %}
+    {% is_english_page page as EN %}
+    {% if EN %}
     <p class="menu-label is-size-5">
         Category
     </p>
@@ -14,9 +15,10 @@
         Python
     </p>
     <ul class="menu-list">
-        <li><a>Python ABC tutorial</a></li>
+        <li><a>Python Basic</a></li>
+        <li><a>Python Advanced</a></li>
         <li><a>Scraper</a></li>
-        <li><a>Data Analysis Tutorial</a></li>
+        <li><a>Data Analysis</a></li>
         <li><a>Web Develop</a></li>
         <li><a>App Develop</a></li>
     </ul>

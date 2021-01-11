@@ -1,0 +1,23 @@
+{% load wagtailimages_tags %}
+{% for post in posts %}
+<div class="column is-4">
+    <div class="card is-transparent is-card-equal-height">
+        <div class="card-image">
+            <figure class="image is-16by9">
+                {% image post.thumbnail original as pto %}
+                <img src="{{ pto.url }}"
+                     alt="Placeholder image">
+            </figure>
+        </div>
+        <div class="card-content">
+            <div class="content">
+                <p class="title is-5">{{ post.title }}</p>
+                <p class="subtitle is-5">{{ post.subtitle}}</p>
+            </div>
+        </div>
+        <footer class="card-footer pr-3 is-justify-content-flex-end">
+            {{ post.date|date:'Y-m-d' }}
+        </footer>
+    </div>
+</div>
+{% endfor %}

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static wagtailimages_tags %}
+{% load static wagtailimages_tags translation_util_tag %}
 
 
 {% block extra_css %}
@@ -18,17 +18,18 @@
     <div class="hero-body">
         <div class="container">
             <h1 class="title">
-                {% if 'zh' in page.url %}
-                歡迎!
-                {% else %}
+                {% is_english_page page as EN %}
+                {% if EN %}
                 Welcome!
+                {% else %}
+                歡迎!
                 {% endif %}
             </h1>
             <h2 class="subtitle">
-                {% if 'zh' in page.url %}
-                這是我分享教學、開發紀錄、專案Demo、開發小工具的地方。
-                {% else %}
+                {% if EN %}
                 This is the place where I share tutorials and dev logs.
+                {% else %}
+                這是我分享教學、開發紀錄、專案Demo、開發小工具的地方。
                 {% endif %}
             </h2>
         </div>
@@ -44,10 +45,10 @@
             </div>
             <div class='column'>
                 <h2 class='title'>
-                    {% if 'zh' in page.url %}
-                    近期貼文:
-                    {% else %}
+                    {% if EN %}
                     Recent Posts:
+                    {% else %}
+                    近期貼文:
                     {% endif %}
                 </h2>
                 <div class="columns is-multiline">

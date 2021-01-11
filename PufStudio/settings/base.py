@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail.core',
+    'wagtail.contrib.modeladmin',
 
     'modelcluster',
     'taggit',
@@ -50,8 +51,10 @@ INSTALLED_APPS = [
     'wagtail_modeltranslation',
     'wagtail_modeltranslation.makemigrations',
     'wagtail_modeltranslation.migrate',
+    'wagtailfontawesome',
 
     'menus',
+    'category',
     'home',
     'blog',
     'apps',
@@ -183,6 +186,6 @@ WAGTAIL_CODE_BLOCK_LANGUAGES = (
 from django.utils.translation import gettext_lazy as _
 
 LANGUAGES = (
-    ('zh', _('Chinese')),
+    ('zh-hant', _('Traditional Chinese')),
     ('en', _('English')),
 )

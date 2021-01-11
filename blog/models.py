@@ -1,28 +1,24 @@
-import random
 
 from django.db import models
-from django import forms
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-
-from wagtail.core.models import Page
-from wagtail.core.fields import StreamField
-from wagtail.core import blocks
+from modelcluster.fields import ParentalKey
+from modelcluster.tags import ClusterTaggableManager
+from taggit.models import TaggedItemBase, Tag as TaggitTag
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, MultiFieldPanel, FieldRowPanel
-from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.core import blocks
+from wagtail.core.fields import StreamField
+from wagtail.core.models import Page
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.snippets.models import register_snippet
+from wagtail.search import index
 from wagtailcodeblock.blocks import CodeBlock
 
-from wagtail.snippets.models import register_snippet
-from taggit.models import TaggedItemBase, Tag
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
-from modelcluster.tags import ClusterTaggableManager
-
 import datetime
-
+from category.models import Category
 
 @register_snippet
-class PostCategory(models.Model):
+class MajorCategory(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, max_length=80)
 
@@ -35,8 +31,8 @@ class PostCategory(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "Category"
-        verbose_name_plural = "Categories"
+        verbose_name = "MajorCategory"
+        verbose_name_plural = "MajorCategories"
 
 
 @register_snippet
@@ -65,6 +61,12 @@ class PostTag(TaggedItemBase):
     )
 
 
+@register_snippet
+class Tag(TaggitTag):
+    class Meta:
+        proxy = True
+
+
 class PostPage(Page):
     date = models.DateField("Post date", default=datetime.datetime.today)
     thumbnail = models.ForeignKey(
@@ -86,14 +88,16 @@ class PostPage(Page):
         ('video', blocks.URLBlock(icon='media')),
         ('image', ImageChooserBlock(icon='image')),
     ])
-    categories = ParentalManyToManyField('blog.PostCategory', blank=True)
+    major_category = models.ForeignKey('MajorCategory', on_delete=models.SET_NULL, blank=True, null=True)
+    categories = models.ForeignKey('category.Category', on_delete=models.SET_NULL, blank=True, null=True)
     tags = ClusterTaggableManager(through='PostTag', blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('subtitle', classname="full"),
         StreamFieldPanel('body'),
         MultiFieldPanel([
-            FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
+            FieldPanel('major_category'),
+            FieldPanel('categories'),
             FieldPanel('tags')],
             heading='Group',
             classname='collapsible collapsed'
@@ -117,18 +121,24 @@ class PostPage(Page):
         ),
     ]
 
+    search_fields = Page.search_fields + [
+        index.SearchField('subtitle'),
+        index.FilterField('is_zh_finished'),
+        index.FilterField('is_en_finished'),
+    ]
+
     def serve(self, request):
         if not (self.is_zh_finished or self.is_en_finished):
             return redirect('/')
         if request.path.startswith('/en'):
             has_translation = self.is_zh_finished
-            other_url = '/zh' + request.path[3:]
-            other_language = 'Chinese'
+            other_url = request.path.replace('/en', '/zh-hant')
+            other_language = 'zh-hant'
             if not self.is_en_finished:
                 return redirect(other_url)
         else:
             has_translation = self.is_en_finished
-            other_url = '/en' + request.path[3:]
+            other_url = request.path.replace('/zh-hant', '/en')
             other_language = '英文'
             if not self.is_zh_finished:
                 return redirect(other_url)
@@ -140,27 +150,36 @@ class PostPage(Page):
 class SearchResultPage(Page):
     def serve(self, request):
         if request.content_type == 'BrythonAjax':
-            print('things went here??')
-            return HttpResponse('123456')
-            # return render(request, 'blog/search_result_ajax.html', dict(result=str(random.randint(10, 50))))
+            keyword = request.GET.get('keyword')
 
-        # if request.method == 'GET':
-            # categories = request.GET.get('cats', None)
-            # tags = request.GET.get('tags', None)
-            # AllPosts = PostPage.objects.filter()
+            if request.path.startswith('/en'):
+                Posts = PostPage.objects.live().filter(is_en_finished=True).search(keyword)
+            else:
+                Posts = PostPage.objects.live().filter(is_zh_finished=True).search(keyword)
+            return render(request, 'blog/search_result_ajax.html', dict(posts=Posts))
 
-            # need some test
-            # for post in PostPage.objects.live().descendant_of(PageFolder):
-            #     print(post.tags)
-        print('standard render is here!!')
 
         if request.path.startswith('/en'):
-            other_url = '/zh' + request.path[3:]
-            other_language = 'Chinese'
+            other_url = request.path.replace('/en', '/zh-hant')
+            other_language = 'zh-hant'
         else:
-            other_url = '/en' + request.path[3:]
+            other_url = request.path.replace('/zh-hant', '/en')
             other_language = '英文'
         has_translation = True
         render_data = locals()
         render_data['page'] = self
         return render(request, 'blog/search_result_page.html', render_data)
+
+
+class CategorySearchPage(Page):
+    def serve(self, request):
+        category_slug = request.GET.get('category', '')
+        QueryCat = Category.objects.filter(name=category_slug).first()
+        if QueryCat:
+            QD = QueryCat.get_descendants()
+            posts = PostPage.objects.live().filter(models.Q(categories__in=QD)|models.Q(categories=QueryCat))
+        render_data = locals()
+        render_data['page'] = self
+        return render(request, 'blog/category_search_page.html', render_data)
+
+

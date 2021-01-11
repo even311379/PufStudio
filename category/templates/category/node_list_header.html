@@ -1,0 +1,10 @@
+{% if if_root %}
+<span style="font-size:135%"><strong>{{ name }}</strong></span>
+{% else %}
+<span class="inline-block" style="margin-left:{{ depth_margin }}em;
+    font-size:{% if depth == 1%}130{% elif depth == 2 %}115{% else %}100{% endif %}%;">
+<i class="icon icon-fa-level-up icon-fa-rotate-90" style="display: inline-block;"></i>
+{{ title }}
+    <span style="color:lightcoral;font-size: 75%">({{ name }})</span>
+    </span>
+{% endif %}

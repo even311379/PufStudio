@@ -1,5 +1,5 @@
-{% load static wagtailuserbar menus_tag %}
-
+{% load static wagtailuserbar menus_tag translation_util_tag %}
+{% is_english_page page as EN %}
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 <head>
@@ -48,26 +48,43 @@
 
     <div id='PufNavbar' class='navbar-menu'>
         <div class="navbar-end">
-            {% get_menu "about" as about %}
-            <a class='navbar-item is-size-4 pr-5' href='{{ about.link }}'>{{ about.title_zh }}</a>
+            {% get_menu "about" True as ABOUT %}
+            <a class='navbar-item is-size-4 pr-5' href='{{ ABOUT.link }}'>{{ ABOUT.title }}</a>
             <div class='navbar-item has-dropdown is-hoverable'>
                 <a class='navbar-link is-size-4' id='PythonLinks'>Python</a>
                 <div class='navbar-dropdown is-boxed is-size-5' id='PythonLinksContent'>
-                    <a class="navbar-item">Tutorial Series 1</a>
-                    <a class="navbar-item">Tutorial Series 2</a>
+                    {% get_menu "PythonSeries" as PS %}
+                    {% for item in PS.menu_items.all %}
+                    <a class="navbar-item" href="{{ item.link }}">
+                        {{ item.title}}
+                    </a>
+                    {% endfor %}
                 </div>
             </div>
             <div class='navbar-item has-dropdown is-hoverable'>
                 <a class='navbar-link is-size-4' id='UnrealLinks'>Unreal</a>
                 <div class='navbar-dropdown is-boxed is-size-5' id='UnrealLinksContent'>
-                    <a class="navbar-item">Unreal Series 1</a>
+                    {% get_menu "UnrealSeries" as US %}
+                    {% for item in US.menu_items.all %}
+                    <a class="navbar-item" href="{{ item.link }}">
+                        {{ item.title }}
+                    </a>
+                    {% endfor %}
+                    {% get_menu "Tools" as T %}
+                    {% for item in T.menu_items.all %}
+                    <a class="navbar-item" href="{{ item.link }}">
+                        {{ item.title }}
+                    </a>
                     <a class="navbar-item">Unreal Dev Tools</a>
+                    {% endfor %}
                 </div>
             </div>
-            <a class="navbar-item is-size-4 ">
+                {% get_menu "RequestJob" True as  RJ%}
+            <a class="navbar-item is-size-4" href="{{ RJ.link }}">
                 Freelancer
             </a>
-            <a class="navbar-item">
+            {% get_menu "search" True as SEARCH%}
+            <a class="navbar-item" href="{{ SEARCH.link }}">
                 <span class='icon has-text-info is-large'><i class="material-icons is-size-2">search</i></span>
             </a>
         </div>

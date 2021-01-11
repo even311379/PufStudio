@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load translation_util_tag %}
 
 {% block content %}
 <section class="section has-background-info-light">
@@ -9,11 +10,9 @@
             </div>
             <div class='column'>
                 <h2 class='title'>
-                    {% if 'zh' in page.url %}
-                    <input id="AjaxInput" class="input is-large is-rounded" type="text" placeholder="輸入關鍵字">
-                    {% else %}
-                    <input id="AjaxInput" class="input is-large is-rounded" type="text" placeholder="Type key words">
-                    {% endif %}
+                    {% is_english_page page as EN%}
+                    <input id="AjaxInput" class="input is-large is-rounded" type="text"
+                           placeholder="{% if EN %}Type Keywords{% else %}輸入關鍵字{% endif %}">
                 </h2>
                 <div class="columns is-multiline" id="AjaxResult">
                 </div>
@@ -28,14 +27,12 @@
 from browser import document, ajax, html
 
 def CompleteAjax(request):
-    OC = html.DIV(Class='column is-4')
-    C = html.DIV(Class='card is-transparent is-card-equal-height')
-    document['AjaxResult']<=OC<=C<=request.responseText
-    #document['AjaxResult']<=request.responseText
+    document['AjaxResult'].html = request.responseText
 
 def SendAjax(ev):
     req = ajax.ajax()
-    req.open('GET', '{{ page.url }}', True)
+    AjaxInput = document['AjaxInput'].value
+    req.open('GET', '{{ page.url }}'+f'?keyword={AjaxInput}', True)
     req.set_header('content-type','BrythonAjax')
     req.bind('complete', CompleteAjax)
     req.send()

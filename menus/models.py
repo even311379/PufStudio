@@ -1,4 +1,3 @@
-#8 Create your models here.
 from django.db import models
 
 from django_extensions.db.fields import AutoSlugField
@@ -16,16 +15,16 @@ from wagtail.snippets.models import register_snippet
 
 class MenuItem(Orderable):
 
-    title_en = models.CharField(
+    title = models.CharField(
         blank=True,
         null=True,
         max_length=50
     )
-    title_zh = models.CharField(
-        blank=True,
-        null=True,
-        max_length=50
-    )
+    # title_zh = models.CharField(
+    #     blank=True,
+    #     null=True,
+    #     max_length=50
+    # )
     link_url = models.CharField(
         max_length=500,
         blank=True
@@ -41,8 +40,7 @@ class MenuItem(Orderable):
     page = ParentalKey("Menu", related_name="menu_items")
 
     panels = [
-        FieldPanel("title_zh"),
-        FieldPanel("title_en"),
+        FieldPanel("title"),
         FieldPanel("link_url"),
         PageChooserPanel("link_page"),
     ]
@@ -55,14 +53,6 @@ class MenuItem(Orderable):
             return self.link_url
         return '#'
 
-    # @property
-    # def title(self):
-    #     if self.link_page and not self.link_title:
-    #         return self.link_page.title
-    #     elif self.link_title:
-    #         return self.link_title
-    #     return 'Missing Title'
-
 
 @register_snippet
 class Menu(ClusterableModel):
@@ -70,7 +60,6 @@ class Menu(ClusterableModel):
 
     title = models.CharField(max_length=100)
     slug = AutoSlugField(populate_from="title", editable=True)
-    # slug = models.SlugField()
 
     panels = [
         MultiFieldPanel([
