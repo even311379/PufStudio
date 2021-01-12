@@ -16,10 +16,8 @@ from wagtail.search import index
 from wagtailcodeblock.blocks import CodeBlock
 
 import datetime
-from category.models import Category
 
-@register_snippet
-class MajorCategory(models.Model):
+class MajorCategory(Orderable, models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, max_length=80)
 
@@ -35,32 +33,7 @@ class MajorCategory(models.Model):
         verbose_name = "MajorCategory"
         verbose_name_plural = "MajorCategories"
 
-# @register_snippet
-# class TestModel(models.Model, Orderable):
-#     test = models.CharField(max_length=30)
-#
-#     panels = [
-#         FieldPanel('test'),
-#     ]
-#
-#     class Meta:
-#         ordering=('sort_order')
-
-
-# @register_snippet
-class VVV(Orderable, models.Model):
-    ved = models.CharField(max_length=30)
-
-    panels = [
-        FieldPanel('ved'),
-    ]
-
-    # class Meta:
-    #     ordering=('sort_order',)
-
-
-@register_snippet
-class PostSeries(models.Model):
+class PostSeries(Orderable, models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, max_length=80)
 
@@ -155,15 +128,11 @@ class PostPage(Page):
         if not (self.is_zh_finished or self.is_en_finished):
             return redirect('/')
         if request.path.startswith('/en'):
-            has_translation = self.is_zh_finished
             other_url = request.path.replace('/en', '/zh-hant')
-            other_language = 'zh-hant'
             if not self.is_en_finished:
                 return redirect(other_url)
         else:
-            has_translation = self.is_en_finished
             other_url = request.path.replace('/zh-hant', '/en')
-            other_language = '英文'
             if not self.is_zh_finished:
                 return redirect(other_url)
         render_data = locals()
@@ -182,28 +151,10 @@ class SearchResultPage(Page):
                 Posts = PostPage.objects.live().filter(is_zh_finished=True).search(keyword)
             return render(request, 'blog/search_result_ajax.html', dict(posts=Posts))
 
-
-        if request.path.startswith('/en'):
-            other_url = request.path.replace('/en', '/zh-hant')
-            other_language = 'zh-hant'
-        else:
-            other_url = request.path.replace('/zh-hant', '/en')
-            other_language = '英文'
-        has_translation = True
         render_data = locals()
         render_data['page'] = self
         return render(request, 'blog/search_result_page.html', render_data)
 
 
-class CategorySearchPage(Page):
-    def serve(self, request):
-        category_slug = request.GET.get('category', '')
-        QueryCat = Category.objects.filter(name=category_slug).first()
-        if QueryCat:
-            QD = QueryCat.get_descendants()
-            posts = PostPage.objects.live().filter(models.Q(categories__in=QD)|models.Q(categories=QueryCat))
-        render_data = locals()
-        render_data['page'] = self
-        return render(request, 'blog/category_search_page.html', render_data)
 
 

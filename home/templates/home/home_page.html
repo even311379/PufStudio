@@ -36,7 +36,7 @@
     </div>
 </section>
 
-
+{% get_current_language_path page as CLP %}
 <section class='section has-background-danger-light'>
     <div class='container is-widescreen'>
         <div class='columns'>
@@ -45,11 +45,7 @@
             </div>
             <div class='column'>
                 <h2 class='title'>
-                    {% if EN %}
-                    Recent Posts:
-                    {% else %}
-                    近期貼文:
-                    {% endif %}
+                    {{ PostGroupTitle }}
                 </h2>
                 <div class="columns is-multiline">
                     {% for post in posts %}
@@ -64,7 +60,7 @@
                             </div>
                             <div class="card-content">
                                 <div class="content">
-                                    <p class="title is-5">{{ post.title }}</p>
+                                    <p class="title is-5"> <a href="/{{ CLP }}/blog/{{ post.slug }}">{{ post.title }}</a></p>
                                     <p class="subtitle is-5">{{ post.subtitle}}</p>
                                 </div>
                             </div>

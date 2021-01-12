@@ -5,6 +5,8 @@ from wagtail.contrib.modeladmin.helpers import ButtonHelper
 from wagtail.contrib.modeladmin.views import CreateView
 from wagtail.contrib.modeladmin.options import ModelAdmin
 
+from wagtail.contrib.modeladmin.options import modeladmin_register
+
 from .models import Category
 # Register your models here.
 
@@ -119,3 +121,6 @@ class CategoryAdmin(ModelAdmin):
             name=self.url_helper.get_action_url_name('add_child')
         )
         return urls + (add_child_url, )
+
+
+modeladmin_register(CategoryAdmin)

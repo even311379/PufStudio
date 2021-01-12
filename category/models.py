@@ -11,9 +11,10 @@ from wagtail.admin.edit_handlers import FieldPanel
 
 from wagtail.admin.forms import WagtailAdminModelForm
 from wagtail.search import index
-# Create your models here.
-## let's expperimenting nested category via
+
+## copy nested category from
 # https://www.codementor.io/@lb0/harnessing-the-power-of-django-and-python-to-build-a-configurable-taxonomy-gi88j23vl
+# with only little modification
 
 node_name_validator = RegexValidator(
     regex='^[\w][a-zA-Z &0-9]+$',
@@ -24,12 +25,14 @@ class Category(index.Indexed, MP_Node):
     title = models.CharField(max_length=30, unique=True, blank=True)
     name = models.CharField(max_length=50, unique=True, validators=[node_name_validator, MinLengthValidator(2)])
     node_order_index = models.IntegerField(blank=True, default=0, editable=False)
+    sibling_order_index = models.IntegerField(blank=True, default=0, editable=True)
     node_child_verbose_name = 'child'
-    node_order_by = ['node_order_index', 'name']
+    node_order_by = ['node_order_index', 'sibling_order_index', 'name']
 
     panels = [
         FieldPanel('title'),
         FieldPanel('name'),
+        FieldPanel('sibling_order_index')
     ]
 
     search_fields = [
@@ -64,7 +67,6 @@ class Category(index.Indexed, MP_Node):
         else:
             super().delete()
 
-    # def get_de
 
     def __str__(self):
         return self.name

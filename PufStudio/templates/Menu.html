@@ -1,86 +1,64 @@
-{% load wagtail_modeltranslation translation_util_tag %}
-
+{% load wagtail_modeltranslation translation_util_tag category_tag %}
+{% get_current_language_path page as CLP %}
 <aside class="menu">
-    {% is_english_page page as EN %}
-    {% if EN %}
+
     <p class="menu-label is-size-5">
         Category
     </p>
     <ul class="menu-list">
-        <li><a>Tutorials</a></li>
-        <li><a>Dev Log</a></li>
-        <li><a>Tools</a></li>
+        {% get_major_categories as MC %}
+        {% for cat in MC %}
+        <li><a href="/{{ CLP }}/?major_category={{ cat.slug }}">{{ cat.name }}</a></li>
+        {% endfor %}
     </ul>
     <p class="menu-label is-size-5">
         Python
     </p>
     <ul class="menu-list">
-        <li><a>Python Basic</a></li>
-        <li><a>Python Advanced</a></li>
-        <li><a>Scraper</a></li>
-        <li><a>Data Analysis</a></li>
-        <li><a>Web Develop</a></li>
-        <li><a>App Develop</a></li>
+        {% get_children_categories 'py' as PYCATS %}
+        {% if not PYCATS %}
+        <h1 class="has-text-danger">No py Category!</h1>
+        {% endif %}
+        {% for cat in PYCATS %}
+        <li><a href="/{{ CLP }}/?category={{ cat.name }}">{{ cat.title }}</a></li>
+        {% endfor %}
     </ul>
     <p class="menu-label is-size-5">
         Unreal
     </p>
     <ul class="menu-list">
-        <li><a>Gameplay Ability System</a></li>
-        <li><a>C++ notes</a></li>
-        <li><a>UMG notes</a></li>
-        <li><a>Dev Demo</a></li>
+        {% get_children_categories 'ue4' as UECATS %}
+        {% if not UECATS %}
+        <h1 class="has-text-danger">No ue4 Category!</h1>
+        {% endif %}
+        {% for cat in UECATS %}
+        <li><a href="/{{ CLP }}/?category={{ cat.name }}">{{ cat.title }}</a></li>
+        {% endfor %}
     </ul>
     <p class="menu-label is-size-5">
         Freelancer
     </p>
     <ul class="menu-list">
-        <li><a>Backlog</a></li>
+        {% get_children_categories 'free' as FRCATS %}
+        {% if not FRCATS %}
+        <h1 class="has-text-danger">No free Category!</h1>
+        {% endif %}
+        {% for cat in FRCATS %}
+        <li><a href="/{{ CLP }}/?category={{ cat.name }}">{{ cat.title }}</a></li>
+        {% endfor %}
         <li><a class='has-text-danger has-text-weight-bold'>Contact Me</a></li>
     </ul>
-    {% else %}
-    <p class="menu-label is-size-5">
-        Category
-    </p>
-    <ul class="menu-list">
-        <li><a>教學</a></li>
-        <li><a>開發紀錄</a></li>
-        <li><a>工具</a></li>
-    </ul>
-    <p class="menu-label is-size-5">
-        Python
-    </p>
-    <ul class="menu-list">
-        <li><a>Python新手教學</a></li>
-        <li><a>爬蟲教學</a></li>
-        <li><a>資料分析教學</a></li>
-        <li><a>網站開發</a></li>
-        <li><a>App開發</a></li>
-    </ul>
-    <p class="menu-label is-size-5">
-        Unreal
-    </p>
-    <ul class="menu-list">
-        <li><a>Gameplay Ability System</a></li>
-        <li><a>C++筆記</a></li>
-        <li><a>UMG筆記</a></li>
-        <li><a>開發展示</a></li>
-    </ul>
-    <p class="menu-label is-size-5">
-        Freelancer
-    </p>
-    <ul class="menu-list">
-        <li><a>接案紀錄</a></li>
-        <li><a class='has-text-danger has-text-weight-bold'>找我交案</a></li>
-    </ul>
-    {% endif %}
-    {% if has_translation %}
+
+    {% has_translation page as HT %}
+    {% get_other_url request as OURL %}
+    {% get_other_language_text page as OLT %}
+    {% if HT %}
     <hr>
     <div class="menu-list is-size-5">
-        <a href="{{ other_url }}">
+        <a href="{{ OURL }}">
             <div class="is-flex is-align-items-center">
                 <i class="material-icons">public</i>
-                <div class="pl-2">{{ other_language }}</div>
+                <div class="pl-2">{{ OLT }}</div>
             </div>
         </a>
     </div>

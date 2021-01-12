@@ -20,11 +20,6 @@ class MenuItem(Orderable):
         null=True,
         max_length=50
     )
-    # title_zh = models.CharField(
-    #     blank=True,
-    #     null=True,
-    #     max_length=50
-    # )
     link_url = models.CharField(
         max_length=500,
         blank=True
