@@ -139,3 +139,4 @@ migrations/
 brython*
 jquery*
 .idea/
+static/

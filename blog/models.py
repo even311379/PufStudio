@@ -8,6 +8,7 @@ from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, MultiField
 from wagtail.core import blocks
 from wagtail.core.fields import StreamField
 from wagtail.core.models import Page
+from wagtailorderable.models import Orderable
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
@@ -33,6 +34,29 @@ class MajorCategory(models.Model):
     class Meta:
         verbose_name = "MajorCategory"
         verbose_name_plural = "MajorCategories"
+
+# @register_snippet
+# class TestModel(models.Model, Orderable):
+#     test = models.CharField(max_length=30)
+#
+#     panels = [
+#         FieldPanel('test'),
+#     ]
+#
+#     class Meta:
+#         ordering=('sort_order')
+
+
+# @register_snippet
+class VVV(Orderable, models.Model):
+    ved = models.CharField(max_length=30)
+
+    panels = [
+        FieldPanel('ved'),
+    ]
+
+    # class Meta:
+    #     ordering=('sort_order',)
 
 
 @register_snippet
