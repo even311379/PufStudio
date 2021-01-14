@@ -29,6 +29,20 @@ a, a:hover, a:visited, a:link, a:active {
   margin: inherit;
 }
 
+.mermaid .title {
+    display: inline;
+    padding: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: inherit;
+    vertical-align: inherit;
+    border-radius: inherit;
+    font-weight: inherit;
+    white-space: inherit;
+    background: inherit;
+    margin: inherit;
+}
+
 .token.operator {
     background-color: rgba(0,0,0,0) !important;
 }
@@ -49,4 +63,9 @@ a, a:hover, a:visited, a:link, a:active {
 }
 .is-card-equal-height .card-footer {
    margin-top: auto;
+}
+
+.sticky-menu{
+    position: fixed;
+    top: 3vh;
 }
