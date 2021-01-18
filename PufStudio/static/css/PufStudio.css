@@ -1,4 +1,4 @@
-h1,h2,h3,h4,h5,h6,p,a  {
+h1,h2,h3,h4,h5,h6,p,a, th, td  {
 
     font-family: 'Noto Sans TC', sans-serif;
 }
@@ -46,6 +46,13 @@ a, a:hover, a:visited, a:link, a:active {
 .token.operator {
     background-color: rgba(0,0,0,0) !important;
 }
+
+pre {
+    color:inherit !important;
+    font-size: inherit !important;
+    background-color: inherit !important;
+}
+
 
 #ToTopWidget {
     position: fixed;
