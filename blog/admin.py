@@ -33,8 +33,8 @@ class ExternalImagesAdmin(ModelAdmin):
 class PostPageAdmin(ModelAdmin):
     model = PostPage
     menu_icon = 'fa-comment'
-    list_display = ('title',)
-    list_filter = ('series_name', 'major_category', 'categories',)
+    list_display = ('title', 'series_id', )
+    list_filter = ('is_en_finished', 'is_zh_finished', 'series_name', 'major_category', 'categories', )
     search_fields = ('title', 'subtitle',)
 
 
