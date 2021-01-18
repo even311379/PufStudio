@@ -16,6 +16,7 @@ from wagtail.snippets.models import register_snippet
 from wagtail.snippets.blocks import SnippetChooserBlock
 from wagtail.search import index
 from wagtailcodeblock.blocks import CodeBlock
+from wagtailmarkdown.blocks import MarkdownBlock
 
 import datetime
 
@@ -80,6 +81,7 @@ class PostPage(Page):
     subtitle = models.CharField(max_length=255, blank=True, null=True)
     body = StreamField([
         ('heading', blocks.CharBlock(form_classname="title", icon='pick')),
+        ('markdown', MarkdownBlock(icon='form')),
         ('paragraph', blocks.RichTextBlock(icon='doc-full')),
         ('mermaid', blocks.TextBlock(icon='link')),
         ('code', CodeBlock(icon='code')),

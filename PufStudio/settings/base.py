@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'wagtail_modeltranslation.migrate',
     'wagtailfontawesome',
     'wagtailorderable',
+    'wagtailmarkdown',
 
     'menus',
     'category',

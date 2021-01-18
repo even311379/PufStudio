@@ -9,3 +9,4 @@ XlsxWriter==1.3.7
 xlwt==1.3.0
 wagtail-orderable
 wagtailfontawesome
+wagtail-markdown

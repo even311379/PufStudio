@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static wagtailimages_tags %}
+{% load static wagtailimages_tags wagtailmarkdown %}
 
 
 {% block extra_css %}
@@ -17,8 +17,8 @@
   ">
     <div class='hero-body'>
         <div class="container">
-            <h1 class='title'>{{ page.title }}</h1>
-            <h2 class='subtitle'>{{ page.subtitle }}</h2>
+            <h1 class='title is-1'>{{ page.title }}</h1>
+            <h2 class='subtitle is-4'>{{ page.subtitle }}</h2>
         </div>
     </div>
 </section>
@@ -31,12 +31,11 @@
         <div class='column' id="Article">
             {% for block in page.body %}
             {% if block.block_type == 'heading' %}
-<!--            <div class='box has-background-danger'>-->
-<!--                <h2 class="title">{{ block.value }}</h2>-->
-<!--            </div>-->
             <h2 class="title mb-3">{{ block.value }}</h2>
             <hr class="has-background-grey-lighter mb-3">
-            {% elif block.block_type == 'paragraph' %}            
+            {% elif block.block_type == 'markdown' %}
+            <div class='content is-medium m-6 is-size-6'>{{ block.value|markdown }}</div>
+            {% elif block.block_type == 'paragraph' %}
             <div class='content is-medium m-6 is-size-6'>{{ block.value }}</div>
             {% elif block.block_type == 'code' %}
             <div class='content'> {{ block }} </div>
