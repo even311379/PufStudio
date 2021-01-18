@@ -1,8 +1,9 @@
 
 from django.db import models
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 from modelcluster.fields import ParentalKey
-from modelcluster.tags import ClusterTaggableManager
+from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase, Tag as TaggitTag
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, MultiFieldPanel, FieldRowPanel
 from wagtail.core import blocks
@@ -12,6 +13,7 @@ from wagtailorderable.models import Orderable
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
+from wagtail.snippets.blocks import SnippetChooserBlock
 from wagtail.search import index
 from wagtailcodeblock.blocks import CodeBlock
 
@@ -84,6 +86,7 @@ class PostPage(Page):
         ('html', blocks.TextBlock(icon='plus-inverse')),
         ('video', blocks.URLBlock(icon='media')),
         ('image', ImageChooserBlock(icon='image')),
+        ('EImage', SnippetChooserBlock(icon='image',target_model='blog.ExternalImage'))
     ])
     major_category = models.ForeignKey('MajorCategory', on_delete=models.SET_NULL, blank=True, null=True)
     categories = models.ForeignKey('category.Category', on_delete=models.SET_NULL, blank=True, null=True)
@@ -154,6 +157,29 @@ class SearchResultPage(Page):
         render_data = locals()
         render_data['page'] = self
         return render(request, 'blog/search_result_page.html', render_data)
+
+
+@register_snippet
+class ExternalImage(models.Model):
+    external_url = models.CharField(max_length=150, blank=False)
+    image_title = models.CharField(max_length=50, blank=False, unique=True)
+
+    panels = [
+        FieldPanel('external_url'),
+        FieldPanel('image_title')
+    ]
+    def get_as_listing_header(self):
+        return render_to_string(
+            'blog/external_image_viewer.html',
+            dict(image_url=self.external_url,
+                 image_title=self.image_title)
+        )
+
+    get_as_listing_header.short_description = 'Image Title'
+    get_as_listing_header.admin_order_field = 'image_title'
+
+    def __str__(self):
+        return self.image_title
 
 
 

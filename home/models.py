@@ -5,10 +5,9 @@ from category.models import Category
 from django.db.models import Q
 
 
-
-
 # todo: make pagination
 class HomePage(Page):
+
     def serve(self, request):
         MajorCat = request.GET.get('major_category')
         Cat = request.GET.get('category')
@@ -20,9 +19,9 @@ class HomePage(Page):
                 QueryCat = Category.objects.get(name=Cat)
                 QD = QueryCat.get_descendants()
                 PostGroupTitle = QueryCat.title
-                posts = PostPage.objects.live().filter(Q(categories__in=QD)|Q(categories=QueryCat))
+                posts = PostPage.objects.live().filter(Q(categories__in=QD) | Q(categories=QueryCat))
             else:
-                PostGroupTitle ='Recent Post'
+                PostGroupTitle = 'Recent Post'
                 posts = PostPage.objects.live().filter(is_en_finished=True)
         else:
             if MajorCat:
@@ -44,7 +43,3 @@ class HomePage(Page):
 class PageFolder(Page):
     def serve(self, request):
         return redirect('/' + request.path.split('/')[1])
-
-
-
-

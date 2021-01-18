@@ -1,0 +1,9 @@
+{% extends "modeladmin/inspect.html" %}
+{% load static %}
+
+{% block content %}
+{{ block.super }}
+<div style="position: relative;top:2rem;left:10%">
+    <img src="{{ instance.external_url }}"/>
+</div>
+{% endblock %}
