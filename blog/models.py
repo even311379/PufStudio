@@ -68,6 +68,7 @@ class Tag(TaggitTag):
 
 
 class PostPage(Page):
+    visits = models.IntegerField('Visits x 2', default=0, help_text='the value is duplicated, just for ease to view here!')
     date = models.DateField("Post date", default=datetime.datetime.today)
     thumbnail = models.ForeignKey(
         'wagtailimages.Image', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
@@ -108,6 +109,7 @@ class PostPage(Page):
 
     settings_panels = Page.settings_panels + [
         FieldPanel('date'),
+        FieldPanel('visits'),
         FieldRowPanel([
             FieldPanel('is_en_finished'),
             FieldPanel('is_zh_finished')],
@@ -130,6 +132,8 @@ class PostPage(Page):
     ]
 
     def serve(self, request):
+        self.visits += 1
+        self.save()
         if not (self.is_zh_finished or self.is_en_finished):
             return redirect('/')
         if request.path.startswith('/en'):

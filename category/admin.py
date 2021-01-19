@@ -123,4 +123,4 @@ class CategoryAdmin(ModelAdmin):
         return urls + (add_child_url, )
 
 
-modeladmin_register(CategoryAdmin)
+# modeladmin_register(CategoryAdmin)

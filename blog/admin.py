@@ -1,10 +1,10 @@
 from wagtail.contrib.modeladmin.options import (
-    ModelAdmin, modeladmin_register)
+    ModelAdmin, modeladmin_register, ModelAdminGroup)
 
 from wagtailorderable.modeladmin.mixins import OrderableMixin
 
 from .models import PostSeries, MajorCategory, ExternalImage, PostPage
-
+from category.admin import CategoryAdmin
 
 class PostSeriesAdmin(OrderableMixin, ModelAdmin):
     model = PostSeries
@@ -17,7 +17,7 @@ class PostSeriesAdmin(OrderableMixin, ModelAdmin):
 class MajorCategoryAdmin(OrderableMixin, ModelAdmin):
     model = MajorCategory
     menu_label = 'Major Category'
-    menu_icon = "fa-industry"
+    menu_icon = "group"
     ordering = ['sort_order']
     list_display = ('name', 'slug')
 
@@ -32,13 +32,18 @@ class ExternalImagesAdmin(ModelAdmin):
 
 class PostPageAdmin(ModelAdmin):
     model = PostPage
+    menu_order = 200
     menu_icon = 'fa-comment'
-    list_display = ('title', 'series_id', )
+    list_display = ('title', 'visits','series_id', )
     list_filter = ('is_en_finished', 'is_zh_finished', 'series_name', 'major_category', 'categories', )
     search_fields = ('title', 'subtitle',)
 
+class Grouping(ModelAdminGroup):
+    menu_label = 'ExtraGroup'
+    menu_icon = 'fa-industry'
+    menu_order = 300
+    items = (PostSeriesAdmin,MajorCategoryAdmin, CategoryAdmin)
 
 modeladmin_register(PostPageAdmin)
-modeladmin_register(PostSeriesAdmin)
-modeladmin_register(MajorCategoryAdmin)
 modeladmin_register(ExternalImagesAdmin)
+modeladmin_register(Grouping)
