@@ -27,10 +27,10 @@
 <section class='section has-background-light'>
     <div class="container is-fullhd">
         <div class='columns'>
-            <div class='column is-one-fifth'>
+            <div class='column is-2'>
                 {% include "Menu.html" %}
             </div>
-            <div class='column' id="Article">
+            <div class='column is-7' id="Article">
                 {% for block in page.body %}
                 {% if block.block_type == 'heading' %}
                 <h2 class="title mb-3">{{ block.value }}</h2>
@@ -73,7 +73,7 @@
                 {% endif %}
                 {% endfor %}
             </div>
-            <div class='column is-one-fifth'>
+            <div class='column is-3'>
                 <div class="box" id="Bookmark">
                 </div>
             </div>
