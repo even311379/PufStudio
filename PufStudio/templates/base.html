@@ -53,7 +53,7 @@
             <div class='navbar-item has-dropdown is-hoverable'>
                 <a class='navbar-link is-size-4' id='PythonLinks'>Python</a>
                 <div class='navbar-dropdown is-boxed is-size-5' id='PythonLinksContent'>
-                    {% get_menu "PythonSeries" as PS %}
+                    {% get_menu "python_series" as PS %}
                     {% for item in PS.menu_items.all %}
                     <a class="navbar-item" href="{{ item.link }}">
                         {{ item.title}}
@@ -64,7 +64,7 @@
             <div class='navbar-item has-dropdown is-hoverable'>
                 <a class='navbar-link is-size-4' id='UnrealLinks'>Unreal</a>
                 <div class='navbar-dropdown is-boxed is-size-5' id='UnrealLinksContent'>
-                    {% get_menu "UnrealSeries" as US %}
+                    {% get_menu "unreal_series" as US %}
                     {% for item in US.menu_items.all %}
                     <a class="navbar-item" href="{{ item.link }}">
                         {{ item.title }}
