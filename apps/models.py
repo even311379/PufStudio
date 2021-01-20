@@ -1,12 +1,11 @@
 from django.db import models
 from django.shortcuts import render
 
-
 from wagtail.core.models import Page
-from wagtail.core import blocks
 from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel
-from wagtail.documents.models import Document
 from wagtail.documents.edit_handlers import DocumentChooserPanel
+from wagtail_color_panel.fields import ColorField
+from wagtail_color_panel.edit_handlers import NativeColorPanel
 import datetime
 
 # Create your models here.
@@ -15,6 +14,7 @@ import datetime
 class AppsPage(Page):
     date = models.DateField('Post Date', default=datetime.datetime.today)
     subtitle = models.CharField(max_length=255, blank=True, null=True)
+    hero_color = ColorField(default="#ff0032")
     custom_html = models.TextField(blank=True, null=True)
     custom_python = models.TextField(blank=True, null=True)
     html_file = models.ForeignKey(
@@ -24,6 +24,7 @@ class AppsPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('subtitle'),
+        NativeColorPanel('hero_color'),
         FieldPanel('custom_html'),
         FieldPanel('custom_python'),
         DocumentChooserPanel('html_file'),
@@ -33,7 +34,7 @@ class AppsPage(Page):
     settings_panels = Page.settings_panels + [
         FieldPanel('date')
     ]
-    
+    parent_page_types = ['home.PageFolder']
     def serve(self, request):
         if (self.html_file):
             with self.html_file.file.open('r') as f:

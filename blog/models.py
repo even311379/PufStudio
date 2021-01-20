@@ -130,7 +130,7 @@ class PostPage(Page):
         index.FilterField('is_zh_finished'),
         index.FilterField('is_en_finished'),
     ]
-
+    parent_page_types = ['home.PageFolder']
     def serve(self, request):
         self.visits += 1
         self.save()

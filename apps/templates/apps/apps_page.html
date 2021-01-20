@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<section class="hero is-small">
+<section class="hero is-small" style="background-color: {{ page.hero_color }};">
   <div class="hero-body">
     <div class="container">
       <h1 class="title">
@@ -19,16 +19,9 @@
   </div>
 </section>
 <section class="section has-background-primary-light">
-  <div class="container is-widescreen">
-    <div class="columns">
-      <div class="column is-one-fifth">
-        {% include "Menu.html" %}
-      </div>
-      <div class="column" id="AppsBody">
+  <div class="container is-widescreen" id="AppsBody">
         {{ page.custom_html|safe }}
         {{ html_content|safe }}
-      </div>
-    </div>
   </div>
 </section>
 {% endblock%}

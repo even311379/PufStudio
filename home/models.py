@@ -41,5 +41,7 @@ class HomePage(Page):
 
 
 class PageFolder(Page):
+    subpage_types = ['blog.PostPage', 'apps.AppsPage']
+
     def serve(self, request):
         return redirect('/' + request.path.split('/')[1])

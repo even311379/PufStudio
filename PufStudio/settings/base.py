@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'wagtailfontawesome',
     'wagtailorderable',
     'wagtailmarkdown',
+    'wagtail_color_panel',
 
     'menus',
     'category',
